@@ -74,8 +74,10 @@ int main(int argc, char *argv[])
     char *line = NULL;
     size_t linecap = 0;
     ssize_t linelen;
+    int lineCnt = 0;
     while ((linelen = getline(&line, &linecap, in)) > 0)
     {
+        lineCnt++;
         // getting the trimmed line (no '\n' and ' ' at front or begin)
         char *tem = strdup(line);
         tem = trim(tem);
@@ -121,9 +123,16 @@ int main(int argc, char *argv[])
             spitPushOrPop(out, arg[0], arg[1], atoi(arg[2]));
         }
 
-        // per iter cleanUP.
-        free(arg[0]);
+        // DEBUG info.
+        printf("Parsing Line %d: ", lineCnt);
+        for (int i = 0; i < argcnt; i++)
+        {
+            printf("%s ", arg[i]);
+        }
         printf("\n");
+
+        // per iter cleanUP
+        free(arg[0]);
         free(tem);
     }
 
