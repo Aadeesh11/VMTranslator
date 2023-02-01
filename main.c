@@ -1,6 +1,8 @@
 #include "includes.h"
 #include "codegen.c"
 
+char *fileName;
+
 FILE *openOut(char *arg)
 {
     int n = strlen(arg);
@@ -22,6 +24,9 @@ FILE *openOut(char *arg)
     s[n + 1] = 'a';
     s[n + 2] = 's';
     s[n + 3] = 'm';
+
+    // setting the global fileName;
+    fileName = strndup(s, n);
     printf("opening: %s\n", s);
     FILE *out = fopen(s, "w");
     free(s);
@@ -120,7 +125,7 @@ int main(int argc, char *argv[])
         else if (argcnt == 3)
         {
             // printf("%s %s %d", arg[0], arg[1], atoi(arg[2]));
-            spitPushOrPop(out, arg[0], arg[1], atoi(arg[2]));
+            spitPushOrPop(out, arg[0], arg[1], atoi(arg[2]), fileName);
         }
 
         // DEBUG info.
@@ -139,6 +144,7 @@ int main(int argc, char *argv[])
     free(line);
     fclose(in);
     fclose(out);
+    free(fileName);
 
     return 0;
 }

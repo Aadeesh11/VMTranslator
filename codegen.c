@@ -1,7 +1,7 @@
 #include "includes.h"
 #include "makeLinkedListForPushCommands.c"
 
-void spitPushOrPop(FILE *out, char *com, char *memSeg, int val)
+void spitPushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
 {
     ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
     if (strcmp(com, "push") == 0)
@@ -37,6 +37,13 @@ void spitPushOrPop(FILE *out, char *com, char *memSeg, int val)
         else if (strcmp(memSeg, "that") == 0)
         {
             makeResultLinkedListForPushLCLARGTHISTHAT(head, "THAT", val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "static") == 0)
+        {
+            makeResultLinkedListForPushStatic(head, val, fileName);
             writeToFile(out, head);
             if (head != NULL)
                 freeList(head);

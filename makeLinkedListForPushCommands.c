@@ -184,4 +184,68 @@ void makeResultLinkedListForPushLCLARGTHISTHAT(ResultLinkedList *head, char *mem
     cur = addToList(s, cur);
 }
 
-//
+// push static i
+void makeResultLinkedListForPushStatic(ResultLinkedList *head, int val, char *fileName)
+{
+    ResultLinkedList *cur = head;
+    if (0 > asprintf(&(cur->string), "//push static %d\n", val))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    char *s;
+    if (0 > asprintf(&s, "//fileName.%d\n", val))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@%s.%d\n", fileName, val))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "D=M\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "A=M\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=D\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "//SP++\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=M+1\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+}
