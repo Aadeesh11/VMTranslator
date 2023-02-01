@@ -24,3 +24,18 @@ M=D
 @SP
 M=M+1
 ```
+
+### 2) CodeGen for push static i
+
+```
+//push static 6
+@Foo.i
+D=M
+
+@SP
+A=M
+M=D
+//SP++
+@SP
+M=M+1
+```
