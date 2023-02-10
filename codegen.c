@@ -1,7 +1,7 @@
 #include "includes.h"
 #include "makeLinkedListForPushCommands.c"
 
-void spitPushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
+void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
 {
     ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
     if (strcmp(com, "push") == 0)
@@ -55,14 +55,27 @@ void spitPushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
             if (head != NULL)
                 freeList(head);
         }
+        else if (strcmp(memSeg, "pointer") == 0)
+        {
+            makeResultLinkedListForPushPointer(head, val == 0 ? "THIS" : "THAT");
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else
+        {
+            printf("ERROR: Wrong memory segment---->");
+            return;
+        }
     }
     else if (strcmp(com, "pop") == 0)
     {
+
         return;
     }
     else
     {
-        printf("ERRRO in parsing: %s was found, expected push or pop!", com);
+        printf("ERROR in parsing: %s was found, expected push or pop!---->", com);
         return;
     }
 }

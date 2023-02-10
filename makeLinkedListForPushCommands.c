@@ -334,3 +334,65 @@ void makeResultLinkedListForPushTemp(ResultLinkedList *head, int val)
     }
     cur = addToList(s, cur);
 }
+
+// push pointer 0/1
+void makeResultLinkedListForPushPointer(ResultLinkedList *head, char *thisOrThat)
+{
+    ResultLinkedList *cur = head;
+    if (0 > asprintf(&(cur->string), "//push %s %s\n", "pointer", thisOrThat))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    char *s;
+    if (0 > asprintf(&s, "@%s\n", thisOrThat))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "D=A\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "A=M\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=D\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "//SP++\n"))
+    {
+        printf("asprintf error here!");
+
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=M+1\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+}

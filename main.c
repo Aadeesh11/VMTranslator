@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         else if (argcnt == 3)
         {
             // printf("%s %s %d", arg[0], arg[1], atoi(arg[2]));
-            spitPushOrPop(out, arg[0], arg[1], atoi(arg[2]), fileName);
+            handlePushOrPop(out, arg[0], arg[1], atoi(arg[2]), fileName);
         }
 
         // DEBUG info.
