@@ -48,6 +48,13 @@ void spitPushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
             if (head != NULL)
                 freeList(head);
         }
+        else if (strcmp(memSeg, "temp") == 0)
+        {
+            makeResultLinkedListForPushTemp(head, val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
     }
     else if (strcmp(com, "pop") == 0)
     {
