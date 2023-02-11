@@ -28,15 +28,27 @@ FILE *openOut(char *arg)
     *(s + n + 4) = '\0';
 
     // setting the global fileName;
-    fileName = calloc((n + 1), sizeof(char));
+    char *fileFromPath = calloc((n + 1), sizeof(char));
     for (int i = 0; i < n; i++)
     {
-        fileName[i] = s[i];
+        fileFromPath[i] = s[i];
     }
-    *(fileName + n) = '\0';
-    printf("opening: %s\n", s);
+    *(fileFromPath + n) = '\0';
+    char *pfile;
+    pfile = fileFromPath + strlen(fileFromPath);
+    for (; pfile > fileFromPath; pfile--)
+    {
+        if ((*pfile == '\\') || (*pfile == '/'))
+        {
+            pfile++;
+            break;
+        }
+    }
+    fileName = strdup(pfile);
+    printf("opening: %s, Parsing file with fileName: %s\n", s, fileName);
     FILE *out = fopen(s, "w");
     free(s);
+    free(fileFromPath);
     return out;
 }
 

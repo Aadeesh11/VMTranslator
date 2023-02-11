@@ -61,6 +61,18 @@ void stackAdd(ResultLinkedList *head)
         return;
     }
     cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=M+1\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
 }
 
 void stackSubtract(ResultLinkedList *head)
@@ -114,7 +126,19 @@ void stackSubtract(ResultLinkedList *head)
         return;
     }
     cur = addToList(s, cur);
-    if (0 > asprintf(&s, "M=D-M\n"))
+    if (0 > asprintf(&s, "M=M-D\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+        return;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=M+1\n"))
     {
         printf("asprintf error here!");
         return;
