@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
         // making decisions based on #of arguments
         if (argcnt == 1)
         {
-            handleArithmetic(out, arg[0]);
+            handleArithmetic(out, arg[0], lineCnt, fileName);
         }
         else if (argcnt == 2)
         {

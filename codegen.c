@@ -140,20 +140,69 @@ void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName
     }
 }
 
-void handleArithmetic(FILE *out, char *com)
+void handleArithmetic(FILE *out, char *com, int lineNum, char *fileName)
 {
     // printf("%s\n", com);
     ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
     if (strcmp(com, "add") == 0)
     {
-        stackAdd(head);
+        stackArithmeticWithTwo(head, com, "+");
         writeToFile(out, head);
         if (head != NULL)
             freeList(head);
     }
     else if (strcmp(com, "sub") == 0)
     {
-        stackSubtract(head);
+        stackArithmeticWithTwo(head, com, "-");
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "neg") == 0)
+    {
+        stackArithmeticWithOne(head, com, "-");
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "and") == 0)
+    {
+        stackArithmeticWithTwo(head, com, "&");
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "or") == 0)
+    {
+        stackArithmeticWithTwo(head, com, "|");
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "not") == 0)
+    {
+        stackArithmeticWithOne(head, com, "!");
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "eq") == 0)
+    {
+        stackLogicalWithTwo(head, lineNum, "JEQ", fileName);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "lt") == 0)
+    {
+        stackLogicalWithTwo(head, lineNum, "JLT", fileName);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "gt") == 0)
+    {
+        stackLogicalWithTwo(head, lineNum, "JGT", fileName);
         writeToFile(out, head);
         if (head != NULL)
             freeList(head);
