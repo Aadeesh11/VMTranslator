@@ -1,3 +1,6 @@
+#ifndef RESULTLL_C
+#define RESULTLL_C
+
 #include "includes.h"
 
 typedef struct ResultLinkedList
@@ -44,3 +47,5 @@ void writeToFile(FILE *out, ResultLinkedList *head)
     }
     return;
 }
+
+#endif

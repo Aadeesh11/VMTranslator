@@ -1,3 +1,6 @@
+#ifndef PUSHCOM_H
+#define PUSHCOM_H
+
 #include "includes.h"
 #include "resultLinkedList.c"
 
@@ -351,7 +354,7 @@ void makeResultLinkedListForPushPointer(ResultLinkedList *head, char *thisOrThat
         return;
     }
     cur = addToList(s, cur);
-    if (0 > asprintf(&s, "D=A\n"))
+    if (0 > asprintf(&s, "D=M\n"))
     {
         printf("asprintf error here!");
         return;
@@ -396,3 +399,5 @@ void makeResultLinkedListForPushPointer(ResultLinkedList *head, char *thisOrThat
     }
     cur = addToList(s, cur);
 }
+
+#endif

@@ -1,5 +1,9 @@
+#ifndef CODEGEN_H
+#define CODEGEN_H
+
 #include "includes.h"
 #include "makeLinkedListForPushCommands.c"
+#include "makeLinkedListForPopCommands.c"
 
 void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
 {
@@ -70,7 +74,60 @@ void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName
     }
     else if (strcmp(com, "pop") == 0)
     {
-
+        if (strcmp(memSeg, "local") == 0)
+        {
+            makeResultLinkedListForPopLCLARGTHISTHAT(head, "LCL", val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "argument") == 0)
+        {
+            makeResultLinkedListForPopLCLARGTHISTHAT(head, "ARG", val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "this") == 0)
+        {
+            makeResultLinkedListForPopLCLARGTHISTHAT(head, "THIS", val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "that") == 0)
+        {
+            makeResultLinkedListForPopLCLARGTHISTHAT(head, "THAT", val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "static") == 0)
+        {
+            makeResultLinkedListForPopStatic(head, fileName, val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "temp") == 0)
+        {
+            makeResultLinkedListPopTemp(head, val);
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else if (strcmp(memSeg, "pointer") == 0)
+        {
+            makeResultLinkedListPopPointer(head, val == 0 ? "THIS" : "THAT");
+            writeToFile(out, head);
+            if (head != NULL)
+                freeList(head);
+        }
+        else
+        {
+            printf("ERROR: Wrong memory segment---->");
+            return;
+        }
         return;
     }
     else
@@ -79,3 +136,5 @@ void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName
         return;
     }
 }
+
+#endif
