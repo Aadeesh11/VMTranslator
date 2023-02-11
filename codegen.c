@@ -4,6 +4,7 @@
 #include "includes.h"
 #include "makeLinkedListForPushCommands.c"
 #include "makeLinkedListForPopCommands.c"
+#include "stackArithmetic.c"
 
 void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
 {
@@ -69,7 +70,8 @@ void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName
         else
         {
             printf("ERROR: Wrong memory segment---->");
-            return;
+            if (head != NULL)
+                freeList(head);
         }
     }
     else if (strcmp(com, "pop") == 0)
@@ -126,14 +128,41 @@ void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName
         else
         {
             printf("ERROR: Wrong memory segment---->");
-            return;
+            if (head != NULL)
+                freeList(head);
         }
-        return;
     }
     else
     {
         printf("ERROR in parsing: %s was found, expected push or pop!---->", com);
-        return;
+        if (head != NULL)
+            freeList(head);
+    }
+}
+
+void handleArithmetic(FILE *out, char *com)
+{
+    // printf("%s\n", com);
+    ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
+    if (strcmp(com, "add") == 0)
+    {
+        stackAdd(head);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "sub") == 0)
+    {
+        stackSubtract(head);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else
+    {
+        printf("ERROR in parsing: %s was found, expected an arithemtic op!----->", com);
+        if (head != NULL)
+            freeList(head);
     }
 }
 

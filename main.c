@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "ctype.h"
 #include "codegen.c"
 
 char *fileName;
@@ -6,6 +7,7 @@ char *fileName;
 FILE *openOut(char *arg)
 {
     int n = strlen(arg);
+    // printf("%s %d\n", arg, n);
     while (n > 0)
     {
         n--;
@@ -14,42 +16,46 @@ FILE *openOut(char *arg)
             break;
         }
     }
-
-    char *s = malloc(sizeof(char) * (n + 4));
+    char *s = calloc((n + 5), sizeof(char));
     for (int i = 0; i < n; i++)
     {
         s[i] = arg[i];
     }
-    s[n] = '.';
-    s[n + 1] = 'a';
-    s[n + 2] = 's';
-    s[n + 3] = 'm';
+    *(s + n) = '.';
+    *(s + n + 1) = 'a';
+    *(s + n + 2) = 's';
+    *(s + n + 3) = 'm';
+    *(s + n + 4) = '\0';
 
     // setting the global fileName;
-    fileName = strndup(s, n);
+    fileName = calloc((n + 1), sizeof(char));
+    for (int i = 0; i < n; i++)
+    {
+        fileName[i] = s[i];
+    }
+    *(fileName + n) = '\0';
     printf("opening: %s\n", s);
     FILE *out = fopen(s, "w");
     free(s);
     return out;
 }
 
-char *trim(char *tem)
+char *trim(char *s)
 {
-    int n = strlen(tem);
-    if (tem[n - 1] == '\n')
-    {
-        tem[n - 1] = '\0';
-        n--;
-    }
-    while (n - 1 >= 0 && tem[n - 1] == ' ')
-        n--;
-    tem[n] = '\0';
+    if (*s == '\0')
+        return s;
+    while (isspace((unsigned char)*s))
+        s++;
 
-    while (*tem == ' ')
-    {
-        tem++;
-    }
-    return tem;
+    if (*s == '\0')
+        return s;
+
+    char *end = s + strlen(s) - 1;
+    while (end > s && isspace((unsigned char)*end))
+        end--;
+
+    end[1] = '\0';
+    return s;
 }
 
 int main(int argc, char *argv[])
@@ -84,12 +90,20 @@ int main(int argc, char *argv[])
     {
         lineCnt++;
         // getting the trimmed line (no '\n' and ' ' at front or begin)
-        char *tem = strdup(line);
-        tem = trim(tem);
-        if (strlen(tem) < 2)
+        char *freeTem = strdup(line);
+        char *tem = freeTem;
+        if (tem[linelen - 1] == '\n')
+            tem[linelen - 1] = '\0';
+        tem = trim(freeTem);
+        if (tem == NULL || strlen(tem) == 0)
+        {
+            free(freeTem);
+            continue;
+        }
+        if (strlen(tem) < 2 && strlen(tem) > 0)
         {
             // some garbage.
-            free(tem);
+            free(freeTem);
             continue;
         }
 
@@ -97,8 +111,7 @@ int main(int argc, char *argv[])
         {
             // its a comment
             // ignore
-
-            free(tem);
+            free(freeTem);
             continue;
         }
 
@@ -108,19 +121,21 @@ int main(int argc, char *argv[])
         int argcnt = 0;
         for (ap = arg; (*ap = strsep(&inputstring, " \t")) != NULL;)
         {
-            argcnt++;
-            if (++ap >= &arg[10])
-                break;
+            if (**ap != '\0')
+            {
+                argcnt++;
+                if (++ap >= &arg[10])
+                    break;
+            }
         }
 
         // making decisions based on #of arguments
         if (argcnt == 1)
         {
-            continue;
+            handleArithmetic(out, arg[0]);
         }
         else if (argcnt == 2)
         {
-            continue;
         }
         else if (argcnt == 3)
         {
@@ -129,7 +144,7 @@ int main(int argc, char *argv[])
         }
 
         // DEBUG info.
-        printf("Parsing Line %d: ", lineCnt);
+        printf("Parsing Line %d (args: %d) --> ", lineCnt, argcnt);
         for (int i = 0; i < argcnt; i++)
         {
             printf("%s ", arg[i]);
@@ -138,7 +153,7 @@ int main(int argc, char *argv[])
 
         // per iter cleanUP
         free(arg[0]);
-        free(tem);
+        free(freeTem);
     }
 
     free(line);
