@@ -1,3 +1,5 @@
+#ifdef MAIN
+
 #ifndef INCLUDE_H
 #define INCLUDE_H
 
@@ -6,4 +8,5 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#endif
 #endif

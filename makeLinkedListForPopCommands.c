@@ -1,3 +1,4 @@
+#ifdef MAIN
 #ifndef POPCOM_H
 #define POPCOM_H
 
@@ -299,4 +300,5 @@ void makeResultLinkedListPopPointer(ResultLinkedList *head, char *thisOrThat)
     cur = addToList(s, cur);
 }
 
+#endif
 #endif

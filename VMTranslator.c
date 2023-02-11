@@ -1,3 +1,6 @@
+#ifndef MAIN
+#define MAIN
+
 #include "includes.h"
 #include "ctype.h"
 #include "codegen.c"
@@ -175,3 +178,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+#endif

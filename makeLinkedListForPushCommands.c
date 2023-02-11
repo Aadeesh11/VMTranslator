@@ -1,3 +1,4 @@
+#ifdef MAIN
 #ifndef PUSHCOM_H
 #define PUSHCOM_H
 
@@ -400,4 +401,5 @@ void makeResultLinkedListForPushPointer(ResultLinkedList *head, char *thisOrThat
     cur = addToList(s, cur);
 }
 
+#endif
 #endif

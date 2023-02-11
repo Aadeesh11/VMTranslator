@@ -1,3 +1,4 @@
+#ifdef MAIN
 #ifndef RESULTLL_C
 #define RESULTLL_C
 
@@ -48,4 +49,5 @@ void writeToFile(FILE *out, ResultLinkedList *head)
     return;
 }
 
+#endif
 #endif

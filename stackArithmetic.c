@@ -1,3 +1,5 @@
+#ifdef MAIN
+
 #ifndef STACKAM_C
 #define STACKAM_C
 
@@ -254,4 +256,5 @@ void stackLogicalWithTwo(ResultLinkedList *head, int lineNum, char *cond, char *
     cur = addToList(s, cur);
 }
 
+#endif
 #endif

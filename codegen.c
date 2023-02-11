@@ -1,3 +1,4 @@
+#ifdef MAIN
 #ifndef CODEGEN_H
 #define CODEGEN_H
 
@@ -215,4 +216,5 @@ void handleArithmetic(FILE *out, char *com, int lineNum, char *fileName)
     }
 }
 
+#endif
 #endif
