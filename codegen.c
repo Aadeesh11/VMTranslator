@@ -6,6 +6,48 @@
 #include "makeLinkedListForPushCommands.c"
 #include "makeLinkedListForPopCommands.c"
 #include "stackArithmetic.c"
+#include "makeLinkedListForBranching.c"
+
+void init(FILE *out)
+{
+    ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
+    ResultLinkedList *cur = head;
+    if (0 > asprintf(&(cur->string), "//init\n"))
+    {
+        printf("asprintf error here!");
+        goto retur;
+    }
+    char *s;
+    if (0 > asprintf(&s, "@256\n"))
+    {
+        printf("asprintf error here!");
+        goto retur;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "D=A\n"))
+    {
+        printf("asprintf error here!");
+        goto retur;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "@SP\n"))
+    {
+        printf("asprintf error here!");
+        goto retur;
+    }
+    cur = addToList(s, cur);
+    if (0 > asprintf(&s, "M=D\n"))
+    {
+        printf("asprintf error here!");
+        goto retur;
+    }
+    cur = addToList(s, cur);
+    writeToFile(out, head);
+
+retur:
+    freeList(head);
+    return;
+}
 
 void handlePushOrPop(FILE *out, char *com, char *memSeg, int val, char *fileName)
 {
@@ -211,6 +253,38 @@ void handleArithmetic(FILE *out, char *com, int lineNum, char *fileName)
     else
     {
         printf("ERROR in parsing: %s was found, expected an arithemtic op!----->", com);
+        if (head != NULL)
+            freeList(head);
+    }
+}
+
+void handleBranching(FILE *out, char *com, char *to, int lineNum, char *fileName)
+{
+    ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
+    if (strcmp(com, "label") == 0)
+    {
+        branchLabel(head, to);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "if-goto") == 0)
+    {
+        branchIfGoto(head, to);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "goto") == 0)
+    {
+        branchGoto(head, to);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else
+    {
+        printf("ERROR in parsing: %s %s was found, expected an branching op!----->", com, to);
         if (head != NULL)
             freeList(head);
     }
