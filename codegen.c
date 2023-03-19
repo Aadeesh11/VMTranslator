@@ -7,6 +7,7 @@
 #include "makeLinkedListForPopCommands.c"
 #include "stackArithmetic.c"
 #include "makeLinkedListForBranching.c"
+#include "makeLinkedListForFunctions.c"
 
 void init(FILE *out)
 {
@@ -42,6 +43,9 @@ void init(FILE *out)
         goto retur;
     }
     cur = addToList(s, cur);
+    ResultLinkedList *head2 = malloc(sizeof(ResultLinkedList));
+    functionCall(head2, "Sys.init", 0);
+    cur->next = head2;
     writeToFile(out, head);
 
 retur:
@@ -285,6 +289,38 @@ void handleBranching(FILE *out, char *com, char *to, int lineNum, char *fileName
     else
     {
         printf("ERROR in parsing: %s %s was found, expected an branching op!----->", com, to);
+        if (head != NULL)
+            freeList(head);
+    }
+}
+
+void handleFunction(FILE *out, char *com, char *name, int numArgs, int lineNum, char *fileName)
+{
+    ResultLinkedList *head = malloc(sizeof(ResultLinkedList));
+    if (strcmp(com, "function") == 0)
+    {
+        functionWrite(head, name, numArgs);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "call") == 0)
+    {
+        functionCall(head, name, numArgs);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else if (strcmp(com, "return") == 0)
+    {
+        functionReturn(head);
+        writeToFile(out, head);
+        if (head != NULL)
+            freeList(head);
+    }
+    else
+    {
+        printf("ERROR in parsing: %s was found, expected an function op!----->", com);
         if (head != NULL)
             freeList(head);
     }

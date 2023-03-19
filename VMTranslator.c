@@ -95,7 +95,6 @@ void workOnFile(FILE *out, char *pathToFile)
         printf("error in opening input file");
         return;
     }
-
     // MAINLoop: parsing line by line
     char *line = NULL;
     size_t linecap = 0;
@@ -152,7 +151,10 @@ void workOnFile(FILE *out, char *pathToFile)
         // making decisions based on #of arguments
         if (argcnt == 1)
         {
-            handleArithmetic(out, arg[0], lineCnt, fileName);
+            if (strcmp(arg[0], "return") == 0)
+                handleFunction(out, arg[0], NULL, -1, lineCnt, fileName);
+            else
+                handleArithmetic(out, arg[0], lineCnt, fileName);
         }
         else if (argcnt == 2)
         {
@@ -161,7 +163,10 @@ void workOnFile(FILE *out, char *pathToFile)
         else if (argcnt == 3)
         {
             // printf("%s %s %d", arg[0], arg[1], atoi(arg[2]));
-            handlePushOrPop(out, arg[0], arg[1], atoi(arg[2]), fileName);
+            if (strcmp(arg[0], "push") == 0 || strcmp(arg[0], "pop") == 0)
+                handlePushOrPop(out, arg[0], arg[1], atoi(arg[2]), fileName);
+            else
+                handleFunction(out, arg[0], arg[1], atoi(arg[2]), lineCnt, fileName);
         }
 
         // DEBUG info.
@@ -212,9 +217,10 @@ int main(int argc, char *argv[])
         }
         while ((de = readdir(dr)) != NULL)
         {
-            if (is_regular_file(de->d_name) && is_vm_file(de->d_name))
+            printf("reading %s\n", de->d_name);
+            if (is_vm_file(de->d_name))
             {
-                printf("reading %s\n", de->d_name);
+                printf("parsing %s\n", de->d_name);
                 // setting fileName
                 fileName = strndup(de->d_name, strlen(de->d_name) - 3);
                 // getting the filepath to read
@@ -236,7 +242,7 @@ int main(int argc, char *argv[])
             printf("error in opening output file");
             return 0;
         }
-        init(out);
+        // init(out);
         workOnFile(out, argv[1]);
     }
     fclose(out);
